@@ -1,0 +1,219 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+//Aluno:Íthalo Silva Soares
+
+struct No {
+    int valor;
+    No *prox;
+    No *penultimo;
+};
+
+struct Lista {
+    No *cabeca, *cauda, *penultimo;
+
+    int n;
+
+    Lista() {
+        cabeca = cauda = NULL;
+        n = 0;
+    }
+
+    bool vazia() { // O(1)
+        return (cabeca == NULL);
+    }
+
+    void inserirInicio(int v) { // O(1)
+        No *novo = new No();
+        novo->valor = v;
+        if (vazia()) {
+            novo->prox = NULL;
+            cabeca = novo;
+            cauda = novo;
+        } else {
+            novo->prox = cabeca;
+            cabeca = novo;
+        }
+        n++;
+    }
+
+    void inserirFinal(int v) { // O(1)
+        No *novo = new No();
+        novo->valor = v;
+        if (vazia()) {
+            novo->prox = NULL;
+            cabeca = novo;
+            cauda = novo;
+        } else {
+            novo->prox = NULL;
+            cauda->prox = novo;
+            cauda = novo;
+        }
+        n++;
+    }
+
+    void imprimir() { // O(n)
+        /*for (No *aux = cabeca; aux != NULL; aux = aux->prox) */
+        No *aux = cabeca;
+        while (aux != NULL) {
+            printf("%d->", aux->valor);
+            aux = aux->prox;
+        }
+        printf("\n");
+    }
+
+    int tamanho() { // O(1)
+        return n;
+    }
+
+    void removerInicio() { // O(1)
+        if (!vazia()) {
+            if (tamanho() == 1) {
+                No *aux = cabeca;
+                cabeca = NULL;
+                cauda = NULL;
+                delete(aux);
+            } else {
+                No *aux = cabeca;
+                cabeca = cabeca->prox;
+                delete(aux);
+            }
+            n--;
+        }
+    }
+
+    void removerFinal() { // O(n)
+        if (!vazia()) {
+            if (tamanho() == 1) {
+                No *aux = cabeca;
+                cabeca = NULL;
+                cauda = NULL;
+                delete(aux);
+            } else {
+                No *penultimo = cabeca;
+                while (penultimo->prox != cauda) {
+                    penultimo = penultimo->prox;
+                }
+                delete(cauda);
+                cauda = penultimo;
+                cauda->prox = NULL;
+            }
+            n--;
+        }
+    }
+
+    void questao1(){
+        No *aux=cabeca;
+        int N;
+
+        printf("\nNumeros a serem removidos do final:");
+        scanf("%d",&N);
+        
+        for(int i = 0; i<N; i++){
+            removerFinal();
+        }
+    }  
+   
+   void questao2(){
+        
+        
+        if(tamanho()>2){
+            No *segundo=cabeca->prox;
+            
+            cabeca->prox=segundo->prox;
+            delete(segundo);
+        } 
+    }
+
+    void questao3() {
+        inserirFinal(n);
+    }
+
+    void questao4(){
+        int inse;
+        
+        printf("\nInsira um numero para contar de 1 até ele no final da lista:\n");
+        scanf("%d",&inse);
+        
+        for(int i = 1; i <= inse; i++){
+            inserirFinal(i);
+        }
+    }
+    
+    void questao5(){
+        No *novo = new No();
+        No *aux=cabeca;
+        No *penultimo;
+        int v;
+        
+        if(tamanho()!=1){
+            printf("\nNumero a ser inserido na penultima posicao:");
+            scanf("%d",&v);
+            novo->valor=v;
+
+            while(aux->prox!=NULL)
+            {
+                if(aux->prox==cauda)
+                {
+                    penultimo=aux;
+                    penultimo->prox=novo;
+                    novo->prox=cauda;
+                }
+                aux=aux->prox;
+            }
+        }
+    }
+};
+
+
+int main()
+{
+    int numQuestao;
+    Lista l;
+    l.inserirInicio(10);
+    l.inserirInicio(7);
+    l.inserirInicio(5);
+    l.inserirFinal(8);
+    l.inserirFinal(2);
+    l.inserirFinal(3);
+    l.imprimir();
+    
+    //l.questao1();
+    //l.imprimir();
+    
+    //l.questao2();
+    //l.imprimir();
+    
+    //l.questao3();
+    //l.imprimir();
+    
+    //l.questao4();
+    //l.imprimir();
+  
+    //l.questao5();
+    //l.imprimir();
+   
+   /*do{
+        printf("\n(digite 0 para sair)");
+        printf("\nQuestão 1,2 ou 5?");
+        scanf("%d",&numQuestao);
+
+        if(numQuestao==1){
+            l.questao1();
+            l.imprimir();
+        }
+
+        if(numQuestao==2){
+            l.questao2();
+            l.imprimir();
+        }
+
+        if(numQuestao==5){
+            l.questao5();
+            l.imprimir();
+        }
+    }
+    while(numQuestao!=0);*/
+
+    return 0;
+}
