@@ -1,0 +1,170 @@
+#include<stdio.h>
+
+struct No {
+    int valor;
+    No *prox;
+};
+
+struct Fila {
+    No *cabeca, *cauda;
+    int n;
+
+    Fila() {
+        cabeca = cauda = NULL;
+        n = 0;
+    }
+
+    bool vazia() { // O(1)
+        return (cabeca == NULL);
+    }
+
+    void inserir(int v) { // O(1)
+        No *novo = new No();
+        novo->valor = v;
+        if (vazia()) {
+            novo->prox = NULL;
+            cabeca = novo;
+            cauda = novo;
+        } else {
+            novo->prox = NULL;
+            cauda->prox = novo;
+            cauda = novo;
+        }
+        n++;
+    }
+
+    int tamanho() { // O(1)
+        return n;
+    }
+
+    void remover() { // O(1)
+        if (!vazia()) {
+            if (tamanho() == 1) {
+                No *aux = cabeca;
+                cabeca = NULL;
+                cauda = NULL;
+                delete(aux);
+            } else {
+                No *aux = cabeca;
+                cabeca = cabeca->prox;
+                delete(aux);
+            }
+            n--;
+        }
+    }
+
+    int frente() {
+        if (vazia()) {
+            return NULL;
+        }
+        return cabeca->valor;
+    }
+
+    //tive que criar um imprimir pra usar na linha 148.
+    void imprimir(){
+        No *aux = cabeca;
+
+        while(aux){
+            printf("%d->", aux->valor);
+            aux=aux->prox;
+        }
+        printf("\n");
+    }
+
+};
+
+/*struct No {
+    int valor;
+    No *prox;
+};*/
+
+struct Pilha {
+
+    No *topo;
+    int n;
+
+    Pilha() {
+        topo = NULL;
+        n = 0;
+    }
+
+    bool vazia() { // O(1)
+        return (topo == NULL);
+    }
+
+    void inserir(int v) { // O(1)
+        No *novo = new No();
+        novo->valor = v;
+        if (vazia()) {
+            novo->prox = NULL;
+            topo = novo;
+        } else {
+            novo->prox = topo;
+            topo = novo;
+        }
+        n++;
+    }
+
+    int tamanho() { // O(1)
+        return n;
+    }
+
+    void remover() { // O(1)
+        if (!vazia()) {
+            if (tamanho() == 1) {
+                No *aux = topo;
+                topo = NULL;
+                delete(aux);
+            } else {
+                No *aux = topo;
+                topo = topo->prox;
+                delete(aux);
+            }
+            n--;
+        }
+    }
+
+    int topoPilha() {
+        if (vazia()) {
+            return NULL;
+        }
+        return topo->valor;
+    }
+};
+
+   void inventendo(Fila f){
+       Pilha p;
+
+       while(!f.vazia()){
+        p.inserir(f.frente());
+        f.remover();
+       }
+
+       while(!p.vazia()){
+        f.inserir(p.topoPilha());
+        p.remover();
+       }
+
+       f.imprimir();
+   }
+
+
+int main (){
+
+    Pilha pi;
+
+    Fila fi;
+
+    fi.inserir(10);
+    fi.inserir(20);
+    fi.inserir(30);
+    fi.inserir(40);
+    fi.inserir(50);
+
+    fi.imprimir();
+
+    inventendo(fi);
+
+
+    return 0;
+}
